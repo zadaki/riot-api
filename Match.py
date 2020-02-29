@@ -1,8 +1,5 @@
 #This class will get all the match data we need
 
-
-
-
 import requests, json;
 
 class Match:
@@ -31,34 +28,34 @@ class Match:
 	def printGameTime(self):
 		#	// returns division with no remainder
 		#	% returns division with only remainder
+		#	simple way to get the gametime in a readable format
 		gamedurationMinutes = str(self.game_duration // 60);
 		gamedurationSeconds = str(self.game_duration % 60);
-		print('Game Time: '+gamedurationMinutes+':'+gamedurationSeconds);
+		gameTime = 'Game Time: '+gamedurationMinutes+':'+gamedurationSeconds;
+		return gameTime
 
 	def	gameInfo(self):
 		#This method will give queue, map, season, patch, mode, and type
-		givenInfo = self.jsonSearch('queueId', self.queue_id, 'map', 'queues.json');
-		print('This game was played on the '+givenInfo);
-		self.jsonSearch('id', self.season_id, 'season', 'seasons.json');
-		givenInfo = self.jsonSearch('gameMode', self.game_mode, 'description', 'gameModes.json');
-		print('An ' + givenInfo);
-		givenInfo = self.jsonSearch('mapId', self.map_id, 'mapName', 'maps.json');
-		print(givenInfo);
-		map = self.map_id;
+		map = self.jsonSearch('queueId', self.queue_id, 'map', 'queues.json');
+		description = self.jsonSearch('queueId', self.queue_id, 'description', 'queues.json');
+		gametype = self.game_type;
+		gameTime = self.printGameTime();
 		season = self.season_id;
 		patch = self.game_version;
 		mode = self.game_mode;
 		type = self.game_type;
-		print('Played on patch '+patch);
-	#This one may look a little fucky, but its a super easy way to change numbers to corresponding words
-	#Basically, what you pass into this a, b, c, and filename.
+		print("\n"+str(gameTime)+"\n"+str(map)+"\n"+str(description)+"\n"+str(gametype)+"\n");
+
+	#This one may look a little fucky, but its a super easy way to change numbers to corresponding words inside a .json file (or the other way around, as long as you give it what you want)
+	#jsonSearch(self, a, b, c, filename): 
+	#Basically, what you pass into this is a, b, c, and filename.
 	#a = What you have from the .json - so things like queueId or mapId
 	#b = The variable that you have already initialized in __init__
-	#d = The part of the .json you want to have printed out to you
+	#c = The part of the .json you want to have printed out to you
 	#filename is the filename you're pulling data from
 	#Speaking of which, I actually downloaded the .jsons with all the relevant information
 	#I figured it would be faster than pulling from a website every single time I wanted something
-	#All you'll have to do is change the hardcoded path I have set ('C:\RIOT API PYTHON\extradata') to whatever you want
+	#All you'll have to do is change the hardcoded path I have set ('C:\RIOT API PYTHON\extradata') to whatever you want, alternatively this could probably be changed back to a URL fairly easily
 	def jsonSearch(self, a, b, c, filename):
 		with open('C:\RIOT API PYTHON\extradata'+'/'+filename) as json_file:
 			data = json.load(json_file)

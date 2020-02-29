@@ -81,7 +81,7 @@ for matchid in matchlistIds:
 listMatchStat = str(3310067183);
 
 thisMatch = Match(listMatchStat, apikey);
-thisMatch.printGameTime();
+
 #print(Summoner.);
 
 #print(gameduration);
@@ -89,7 +89,6 @@ thisMatch.printGameTime();
 #print(listMatchStat);
 
 thisMatch.gameInfo();
-
 
 
 
