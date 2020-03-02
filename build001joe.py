@@ -16,7 +16,7 @@ sum_name = input();
 #The API Key is the only truly necessary initial
 #variable needed because of encapsulation with
 #the Summoner method. Hop over there for details.
-apikey='RGAPI-6aa1bffb-74b9-44e0-91f1-8339913cd2ef';
+apikey='RGAPI-225dd131-5096-4c70-945e-d961682f3844';
 
 #Makes a method call to initialize a new Summoner object
 #Also uses a method I wrote that displays the Summoner information
@@ -51,7 +51,7 @@ x=0;
 i = 0;
 for match in matchlistRead["matches"]:
 	CHAMPION_ID = match['champion'];
-	if (i < 2):
+	if (i < 10):
 		matchlistIds.append(match['gameId']);
 		i += 1;
 	for key in ckey:
@@ -63,32 +63,62 @@ for match in matchlistRead["matches"]:
 #the last x amount of games.
 print('These are the champions that '+sum_name+' has played in the last '+str(len(CHAMPS_PLAYED))+' games: ');
 print(str(CHAMPS_PLAYED)+"\n");
-
+CHAMPIONS = []
+CHAMPIONS = CHAMPS_PLAYED;
 
 #Sorts the list and is able to display how
 #many games played on each(!). Not pretty. Will work for now.
-CHAMPS_PLAYED.sort();
+#CHAMPS_PLAYED.sort();
 test = collections.Counter(CHAMPS_PLAYED);
 print("These are the number of games played on each unique champion in the last "+str(len(CHAMPS_PLAYED))+" games: \n"+str(test));
 #test print
+
 print(matchlistIds);
 listMatchIndex = 0;
 listMatchStats = [];
-for matchid in matchlistIds:
-	responsematchstats = requests.get('https://na1.api.riotgames.com/lol/match/v4/matches/'+str(matchlistIds[0])+'?api_key='+apikey)
-	listMatchJson = responsematchstats.json();
-	listMatchStats.append(listMatchJson);
-listMatchStat = str(3310067183);
+print("This is CHAMPSPLAYED:");
+print(CHAMPIONS);
 
-thisMatch = Match(listMatchStat, apikey);
+incre = 0;
 
-#print(Summoner.);
-
-#print(gameduration);
-
-#print(listMatchStat);
-
-thisMatch.gameInfo();
+while(incre < len(matchlistIds)):
+	thisMatch = Match(matchlistIds[incre], apikey, sum_name);
+	print("Game "+str(incre)+":"+"\n"+CHAMPIONS[incre]);
+	thisMatch.gameInfo();
+	incre += 1;
 
 
+#This little bit is just thrown together to see how far back you can get matches, which seems to be roughly march 2018
+#Just a general test for seeing how adding extra parameters to a URL works, overall pretty simple
+#One interesting thing to note is that if your beginning index is larger than the number of matches it has recorded it doesn't really care, it just keep going through the loop without any kind of errors
+"""
+CHAMPIONESEPLAYED = [];
+beginIndex = 5000;
+while(beginIndex > 0):
+	if(sum_name == "Random1227"):
+		accountID = '2IqZ3-UXzFCyihgopqFNVH4iCplNeortvBQw5VnwjYJqRg';
+	elif(sum_name == "Storm Raizer"):
+		accountID = 'xDjAQMxnnd1hEIN9UrljVpsob_UcPhn0LS-U1guHDIIPYNI';
+	elif(sum_name == "Zadaki"):
+		accountID = 'ObF4h-ATOFjzfKkCPKvzujy1Xe5ziftI2Do8oumlXj9Pf8I';
+	elif(sum_name == "cba"):
+		accountID = 'fv17L-51zsd2bB6F9hJK_355iRVg4_uWA02u7io9LbZ936wTWlmUYpXo';
+
+
+	farmatchlist = requests.get('https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/'+str(accountID)+'?beginIndex='+str(beginIndex)+'&api_key=RGAPI-4ebc6daa-1109-4f8c-9f60-65f1f5efe1eb')
+	farmatchlist2 = farmatchlist.json();
+
+	x=0;
+	#I hate this block of code. It makes my head hurt.
+	i = 0;
+	for match in farmatchlist2["matches"]:
+		CHAMPION_ID = match['champion'];
+		for key in ckey:
+			if (str(CHAMPION_ID) == str(key)):
+				x = ckey.index(key);
+				CHAMPIONESEPLAYED.append(cid[x]);
+	beginIndex = beginIndex -100;
+	test2 = collections.Counter(CHAMPIONESEPLAYED);
+print('These are the champions played in the last '+str(len(CHAMPIONESEPLAYED))+'\n'+str(test2));
+"""
 
