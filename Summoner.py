@@ -52,3 +52,19 @@ class Summoner:
 		matchlist = requests.get('https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/' + self.acc_id + '?api_key=' + api_key);
 		matchlistJson = matchlist.json();
 		return matchlistJson;
+	
+	def getSeasonStats(self, api_key):
+		url = 'https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/{0}/?api_key={1}'.format(self.eId, api_key);
+		grabStats = requests.get(url);
+
+		#This grabs the API pull for Summoner ranked informatio and displays the file type after using .json() method call and displays the file.
+		data = grabStats.json();
+		print(type(data));
+		print(data);
+
+		#This commented segment is the converting method I've been using that works, but returns it as an empty dictionary. Ignore it for now.
+		#it = iter(data);
+		#convert = dict(zip(it, it));
+
+		#print(convert);
+		#print(type(convert));
